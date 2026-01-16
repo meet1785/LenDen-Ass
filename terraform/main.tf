@@ -140,7 +140,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false  # ✅ FIXED: Don't auto-assign public IPs
 
   tags = {
     Name        = "${var.app_name}-public-subnet"
@@ -178,7 +178,7 @@ resource "aws_security_group" "web_server" {
   description = "Security group for web server - SECURED"
   vpc_id      = aws_vpc.main.id
 
-  # ✅ FIXED: SSH restricted to specific CIDR blocks only
+  # ✅ FIXED: SSH restricted to specific CIDR blocks only (private networks)
   ingress {
     description = "SSH from trusted networks only"
     from_port   = 22
@@ -187,47 +187,47 @@ resource "aws_security_group" "web_server" {
     cidr_blocks = var.allowed_ssh_cidr_blocks  # ✅ Not 0.0.0.0/0!
   }
 
-  # ✅ SECURE: HTTPS instead of HTTP
+  # ✅ SECURE: HTTPS restricted to VPC CIDR (use ALB for public access)
   ingress {
-    description = "HTTPS from anywhere"
+    description = "HTTPS from VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]  # ✅ VPC CIDR only
   }
 
-  # Application port (consider putting behind ALB in production)
+  # Application port restricted to VPC
   ingress {
-    description = "Application port"
+    description = "Application port from VPC"
     from_port   = 5000
     to_port     = 5000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]  # ✅ VPC CIDR only
   }
 
-  # ✅ SECURE: Restricted egress - only necessary ports
+  # ✅ SECURE: Restricted egress to VPC CIDR only
   egress {
-    description = "HTTPS outbound"
+    description = "HTTPS outbound to VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]  # ✅ VPC CIDR only
   }
 
   egress {
-    description = "HTTP outbound for package updates"
+    description = "HTTP outbound to VPC"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]  # ✅ VPC CIDR only
   }
 
   egress {
-    description = "DNS resolution"
+    description = "DNS resolution within VPC"
     from_port   = 53
     to_port     = 53
     protocol    = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]  # ✅ VPC CIDR only
   }
 
   tags = {
