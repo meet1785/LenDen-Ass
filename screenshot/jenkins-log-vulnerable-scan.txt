@@ -1,0 +1,400 @@
+Started by user unknown or anonymous
+Obtained Jenkinsfile from git https://github.com/meet1785/LenDen-Ass.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/devsecops-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/devsecops-pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/meet1785/LenDen-Ass.git # timeout=10
+Fetching upstream changes from https://github.com/meet1785/LenDen-Ass.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/meet1785/LenDen-Ass.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 411daa392e2ba4180334f41dfaa91e9e87c00c70 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 411daa392e2ba4180334f41dfaa91e9e87c00c70 # timeout=10
+Commit message: "Demo: Scan vulnerable terraform first"
+ > git rev-list --no-walk 42882b9bcaec910bf8f09ad5409f18b0d596395d # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-01-16T08:46:53.384Z] Timeout set to expire in 30 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] echo
+[2026-01-16T08:46:53.467Z] ==========================================
+[Pipeline] echo
+[2026-01-16T08:46:53.481Z] 📥 Stage 1: Checkout Source Code
+[Pipeline] echo
+[2026-01-16T08:46:53.493Z] ==========================================
+[Pipeline] checkout
+[2026-01-16T08:46:53.510Z] Selected Git installation does not exist. Using Default
+[2026-01-16T08:46:53.510Z] The recommended git tool is: NONE
+[2026-01-16T08:46:53.511Z] No credentials specified
+[2026-01-16T08:46:53.511Z]  > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/devsecops-pipeline/.git # timeout=10
+[2026-01-16T08:46:53.520Z] Fetching changes from the remote Git repository
+[2026-01-16T08:46:53.523Z]  > git config remote.origin.url https://github.com/meet1785/LenDen-Ass.git # timeout=10
+[2026-01-16T08:46:53.532Z] Fetching upstream changes from https://github.com/meet1785/LenDen-Ass.git
+[2026-01-16T08:46:53.532Z]  > git --version # timeout=10
+[2026-01-16T08:46:53.541Z]  > git --version # 'git version 2.47.3'
+[2026-01-16T08:46:53.541Z]  > git fetch --tags --force --progress -- https://github.com/meet1785/LenDen-Ass.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2026-01-16T08:46:54.097Z]  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+[2026-01-16T08:46:54.104Z] Checking out Revision 411daa392e2ba4180334f41dfaa91e9e87c00c70 (refs/remotes/origin/main)
+[2026-01-16T08:46:54.104Z]  > git config core.sparsecheckout # timeout=10
+[2026-01-16T08:46:54.109Z]  > git checkout -f 411daa392e2ba4180334f41dfaa91e9e87c00c70 # timeout=10
+[2026-01-16T08:46:54.124Z] Commit message: "Demo: Scan vulnerable terraform first"
+[Pipeline] sh
+[2026-01-16T08:46:54.402Z] + echo Repository contents:
+[2026-01-16T08:46:54.402Z] Repository contents:
+[2026-01-16T08:46:54.402Z] + ls -la
+[2026-01-16T08:46:54.402Z] total 80
+[2026-01-16T08:46:54.402Z] drwxr-xr-x 8 root root  4096 Jan 16 08:46 .
+[2026-01-16T08:46:54.402Z] drwxr-xr-x 4 root root  4096 Jan 16 08:42 ..
+[2026-01-16T08:46:54.402Z] drwxr-xr-x 8 root root  4096 Jan 16 08:46 .git
+[2026-01-16T08:46:54.402Z] -rw-r--r-- 1 root root 17363 Jan 16 08:46 Jenkinsfile
+[2026-01-16T08:46:54.403Z] -rw-r--r-- 1 root root 17294 Jan 16 08:42 README.md
+[2026-01-16T08:46:54.403Z] drwxr-xr-x 4 root root  4096 Jan 16 08:42 app
+[2026-01-16T08:46:54.403Z] -rw-r--r-- 1 root root  1142 Jan 16 08:42 docker-compose.jenkins.yml
+[2026-01-16T08:46:54.403Z] -rw-r--r-- 1 root root   557 Jan 16 08:42 docker-compose.yml
+[2026-01-16T08:46:54.403Z] drwxr-xr-x 2 root root  4096 Jan 16 08:42 jenkins
+[2026-01-16T08:46:54.403Z] drwxr-xr-x 2 root root  4096 Jan 16 08:42 scripts
+[2026-01-16T08:46:54.403Z] drwxr-xr-x 2 root root  4096 Jan 16 08:42 terraform
+[2026-01-16T08:46:54.403Z] drwxr-xr-x 2 root root  4096 Jan 16 08:42 terraform-vulnerable
+[2026-01-16T08:46:54.403Z] + echo 
+[2026-01-16T08:46:54.403Z] 
+[2026-01-16T08:46:54.403Z] + echo Git information:
+[2026-01-16T08:46:54.403Z] Git information:
+[2026-01-16T08:46:54.403Z] + git log --oneline -5
+[2026-01-16T08:46:54.403Z] 411daa3 Demo: Scan vulnerable terraform first
+[2026-01-16T08:46:54.403Z] 42882b9 Complete DevSecOps assignment with Docker, Terraform, Jenkins
+[2026-01-16T08:46:54.403Z] a389346 Initial commit
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Infrastructure Security Scan)
+[Pipeline] echo
+[2026-01-16T08:46:54.500Z] ==========================================
+[Pipeline] echo
+[2026-01-16T08:46:54.511Z] 🔒 Stage 2: Infrastructure Security Scan
+[Pipeline] echo
+[2026-01-16T08:46:54.520Z] ==========================================
+[Pipeline] echo
+[2026-01-16T08:46:54.541Z] Scanning directory: terraform-vulnerable
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2026-01-16T08:46:54.835Z] + 
+[2026-01-16T08:46:54.835Z] + echo Installing Trivy...
+[2026-01-16T08:46:54.835Z] Installing Trivy...
+[2026-01-16T08:46:54.835Z] + command -v trivy
+[2026-01-16T08:46:54.835Z] /usr/local/bin/trivy
+[2026-01-16T08:46:54.835Z] + curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh
+[2026-01-16T08:46:54.835Z] + sh -s -- -b /usr/local/bin v0.48.0
+[2026-01-16T08:46:54.835Z] aquasecurity/trivy info checking GitHub for tag 'v0.48.0'
+[2026-01-16T08:46:55.386Z] aquasecurity/trivy info found version: 0.48.0 for v0.48.0/Linux/64bit
+[2026-01-16T08:46:59.509Z] aquasecurity/trivy info installed /usr/local/bin/trivy
+[2026-01-16T08:46:59.760Z] + trivy --version
+[2026-01-16T08:47:01.629Z] Version: 0.48.0
+[2026-01-16T08:47:01.629Z] Policy Bundle:
+[2026-01-16T08:47:01.629Z]   Digest: sha256:5c4c5f5b566ddbc83888108ba8d6c6f23098cf51a848a8d4f40e2865f18861aa
+[2026-01-16T08:47:01.629Z]   DownloadedAt: 2026-01-16 08:42:17.946680565 +0000 UTC
+[Pipeline] sh
+[2026-01-16T08:47:03.989Z] + echo 
+[2026-01-16T08:47:03.989Z] 
+[2026-01-16T08:47:03.989Z] + echo ╔══════════════════════════════════════════════════════════════╗
+[2026-01-16T08:47:03.989Z] ╔══════════════════════════════════════════════════════════════╗
+[2026-01-16T08:47:03.989Z] + echo ║           TRIVY INFRASTRUCTURE SECURITY SCAN                  ║
+[2026-01-16T08:47:03.989Z] ║           TRIVY INFRASTRUCTURE SECURITY SCAN                  ║
+[2026-01-16T08:47:03.989Z] + echo ╚══════════════════════════════════════════════════════════════╝
+[2026-01-16T08:47:03.989Z] ╚══════════════════════════════════════════════════════════════╝
+[2026-01-16T08:47:03.989Z] + echo 
+[2026-01-16T08:47:03.989Z] 
+[2026-01-16T08:47:03.989Z] + trivy config terraform-vulnerable --severity HIGH,CRITICAL --format table --exit-code 0
+[2026-01-16T08:47:04.903Z] 2026-01-16T08:47:04.882Z	[34mINFO[0m	Misconfiguration scanning is enabled
+[2026-01-16T08:47:05.814Z] 2026-01-16T08:47:05.741Z	[34mINFO[0m	Detected config files: 2
+[2026-01-16T08:47:05.814Z] 
+[2026-01-16T08:47:05.814Z] main.tf (terraform)
+[2026-01-16T08:47:05.814Z] ===================
+[2026-01-16T08:47:05.814Z] Tests: 8 (SUCCESSES: 1, FAILURES: 7, EXCEPTIONS: 0)
+[2026-01-16T08:47:05.814Z] Failures: 7 (HIGH: 3, CRITICAL: 4)
+[2026-01-16T08:47:05.814Z] 
+[2026-01-16T08:47:05.814Z] HIGH: Instance does not require IMDS access to require a token
+[2026-01-16T08:47:05.814Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.814Z] 
+[2026-01-16T08:47:05.814Z] IMDS v2 (Instance Metadata Service) introduced session authentication tokens which improve security when talking to IMDS.
+[2026-01-16T08:47:05.814Z] By default <code>aws_instance</code> resource sets IMDS session auth tokens to be optional. 
+[2026-01-16T08:47:05.814Z] To fully protect IMDS you need to enable session tokens by using <code>metadata_options</code> block and its <code>http_tokens</code> variable set to <code>required</code>.
+[2026-01-16T08:47:05.814Z] 
+[2026-01-16T08:47:05.814Z] 
+[2026-01-16T08:47:05.814Z] See https://avd.aquasec.com/misconfig/avd-aws-0028
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  main.tf:218
+[2026-01-16T08:47:05.815Z]    via main.tf:216-220 (metadata_options)
+[2026-01-16T08:47:05.815Z]     via main.tf:200-249 (aws_instance.web_server)
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  200   resource "aws_instance" "web_server" {
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  218 [     http_tokens                 = "optional"  # ❌ VULNERABILITY: Should be "required"
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  249   }
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] CRITICAL: Security group rule allows egress to multiple public internet addresses.
+[2026-01-16T08:47:05.815Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.815Z] Opening up ports to connect out to the public internet is generally to be avoided. You should restrict access to IP addresses or ranges that are explicitly required where possible.
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] See https://avd.aquasec.com/misconfig/avd-aws-0104
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  main.tf:187
+[2026-01-16T08:47:05.815Z]    via main.tf:182-188 (egress)
+[2026-01-16T08:47:05.815Z]     via main.tf:148-194 (aws_security_group.web_server)
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  148   resource "aws_security_group" "web_server" {
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  187 [     cidr_blocks = ["0.0.0.0/0"]
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  194   }
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] CRITICAL: Security group rule allows ingress from public internet.
+[2026-01-16T08:47:05.815Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.815Z] Opening up ports to the public internet is generally to be avoided. You should restrict access to IP addresses or ranges that explicitly require it where possible.
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] See https://avd.aquasec.com/misconfig/avd-aws-0107
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  main.tf:178
+[2026-01-16T08:47:05.815Z]    via main.tf:173-179 (ingress)
+[2026-01-16T08:47:05.815Z]     via main.tf:148-194 (aws_security_group.web_server)
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  148   resource "aws_security_group" "web_server" {
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  178 [     cidr_blocks = ["0.0.0.0/0"]
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  194   }
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] CRITICAL: Security group rule allows ingress from public internet.
+[2026-01-16T08:47:05.815Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.815Z] Opening up ports to the public internet is generally to be avoided. You should restrict access to IP addresses or ranges that explicitly require it where possible.
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] See https://avd.aquasec.com/misconfig/avd-aws-0107
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  main.tf:169
+[2026-01-16T08:47:05.815Z]    via main.tf:164-170 (ingress)
+[2026-01-16T08:47:05.815Z]     via main.tf:148-194 (aws_security_group.web_server)
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  148   resource "aws_security_group" "web_server" {
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  169 [     cidr_blocks = ["0.0.0.0/0"]
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  194   }
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] CRITICAL: Security group rule allows ingress from public internet.
+[2026-01-16T08:47:05.815Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.815Z] Opening up ports to the public internet is generally to be avoided. You should restrict access to IP addresses or ranges that explicitly require it where possible.
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] See https://avd.aquasec.com/misconfig/avd-aws-0107
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  main.tf:160
+[2026-01-16T08:47:05.815Z]    via main.tf:155-161 (ingress)
+[2026-01-16T08:47:05.815Z]     via main.tf:148-194 (aws_security_group.web_server)
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  148   resource "aws_security_group" "web_server" {
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  160 [     cidr_blocks = ["0.0.0.0/0"]
+[2026-01-16T08:47:05.815Z]  ...   
+[2026-01-16T08:47:05.815Z]  194   }
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] HIGH: Root block device is not encrypted.
+[2026-01-16T08:47:05.815Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.815Z] Block devices should be encrypted to ensure sensitive data is held securely at rest.
+[2026-01-16T08:47:05.815Z] 
+[2026-01-16T08:47:05.815Z] See https://avd.aquasec.com/misconfig/avd-aws-0131
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.815Z]  main.tf:212
+[2026-01-16T08:47:05.815Z]    via main.tf:208-213 (root_block_device)
+[2026-01-16T08:47:05.815Z]     via main.tf:200-249 (aws_instance.web_server)
+[2026-01-16T08:47:05.815Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.816Z]  200   resource "aws_instance" "web_server" {
+[2026-01-16T08:47:05.816Z]  ...   
+[2026-01-16T08:47:05.816Z]  212 [     encrypted             = false  # ❌ VULNERABILITY: Should be true!
+[2026-01-16T08:47:05.816Z]  ...   
+[2026-01-16T08:47:05.816Z]  249   }
+[2026-01-16T08:47:05.816Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.816Z] 
+[2026-01-16T08:47:05.816Z] 
+[2026-01-16T08:47:05.816Z] HIGH: Subnet associates public IP address.
+[2026-01-16T08:47:05.816Z] ════════════════════════════════════════
+[2026-01-16T08:47:05.816Z] You should limit the provision of public IP addresses for resources. Resources should not be exposed on the public internet, but should have access limited to consumers required for the function of your application.
+[2026-01-16T08:47:05.816Z] 
+[2026-01-16T08:47:05.816Z] See https://avd.aquasec.com/misconfig/avd-aws-0164
+[2026-01-16T08:47:05.816Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.816Z]  main.tf:115
+[2026-01-16T08:47:05.816Z]    via main.tf:111-121 (aws_subnet.public)
+[2026-01-16T08:47:05.816Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.816Z]  111   resource "aws_subnet" "public" {
+[2026-01-16T08:47:05.818Z]  112     vpc_id                  = aws_vpc.main.id
+[2026-01-16T08:47:05.818Z]  113     cidr_block              = "10.0.1.0/24"
+[2026-01-16T08:47:05.818Z]  114     availability_zone       = data.aws_availability_zones.available.names[0]
+[2026-01-16T08:47:05.818Z]  115 [   map_public_ip_on_launch = true
+[2026-01-16T08:47:05.818Z]  116   
+[2026-01-16T08:47:05.818Z]  117     tags = {
+[2026-01-16T08:47:05.818Z]  118       Name        = "${var.app_name}-public-subnet"
+[2026-01-16T08:47:05.818Z]  119       Environment = var.environment
+[2026-01-16T08:47:05.818Z]  ...   
+[2026-01-16T08:47:05.818Z] ────────────────────────────────────────
+[2026-01-16T08:47:05.818Z] 
+[2026-01-16T08:47:05.818Z] 
+[2026-01-16T08:47:05.818Z] + echo 
+[2026-01-16T08:47:05.818Z] 
+[2026-01-16T08:47:05.818Z] + echo Generating detailed JSON report...
+[2026-01-16T08:47:05.818Z] Generating detailed JSON report...
+[2026-01-16T08:47:05.818Z] + trivy config terraform-vulnerable --severity LOW,MEDIUM,HIGH,CRITICAL --format json --output trivy-report.json
+[2026-01-16T08:47:06.729Z] 2026-01-16T08:47:06.634Z	[34mINFO[0m	Misconfiguration scanning is enabled
+[2026-01-16T08:47:07.641Z] 2026-01-16T08:47:07.482Z	[34mINFO[0m	Detected config files: 2
+[2026-01-16T08:47:07.641Z] + echo 
+[2026-01-16T08:47:07.641Z] 
+[2026-01-16T08:47:07.641Z] + echo ═══════════════════════════════════════════════════════════════
+[2026-01-16T08:47:07.641Z] ═══════════════════════════════════════════════════════════════
+[2026-01-16T08:47:07.641Z] + echo                     SCAN SUMMARY                                
+[2026-01-16T08:47:07.641Z]                     SCAN SUMMARY                                
+[2026-01-16T08:47:07.641Z] + echo ═══════════════════════════════════════════════════════════════
+[2026-01-16T08:47:07.641Z] ═══════════════════════════════════════════════════════════════
+[2026-01-16T08:47:07.641Z] + trivy config terraform-vulnerable --severity CRITICAL --format json
+[2026-01-16T08:47:07.641Z] + grep -c "Severity": "CRITICAL"
+[2026-01-16T08:47:09.508Z] + CRITICAL_COUNT=4
+[2026-01-16T08:47:09.509Z] + trivy config terraform-vulnerable --severity HIGH --format json
+[2026-01-16T08:47:09.509Z] + grep -c "Severity": "HIGH"
+[2026-01-16T08:47:11.372Z] + HIGH_COUNT=3
+[2026-01-16T08:47:11.373Z] + echo Critical Issues: 4
+[2026-01-16T08:47:11.373Z] Critical Issues: 4
+[2026-01-16T08:47:11.373Z] + echo High Issues: 3
+[2026-01-16T08:47:11.373Z] High Issues: 3
+[2026-01-16T08:47:11.373Z] + echo 
+[2026-01-16T08:47:11.373Z] 
+[2026-01-16T08:47:11.373Z] + [ 4 -gt 0 ]
+[2026-01-16T08:47:11.373Z] + echo ❌ CRITICAL security vulnerabilities detected!
+[2026-01-16T08:47:11.373Z] ❌ CRITICAL security vulnerabilities detected!
+[2026-01-16T08:47:11.373Z] + echo 
+[2026-01-16T08:47:11.373Z] 
+[2026-01-16T08:47:11.373Z] + echo ╔══════════════════════════════════════════════════════════════╗
+[2026-01-16T08:47:11.373Z] ╔══════════════════════════════════════════════════════════════╗
+[2026-01-16T08:47:11.373Z] + echo ║  ACTION REQUIRED: Fix vulnerabilities before deployment      ║
+[2026-01-16T08:47:11.373Z] ║  ACTION REQUIRED: Fix vulnerabilities before deployment      ║
+[2026-01-16T08:47:11.373Z] + echo ║  Use AI to analyze the report and remediate issues          ║
+[2026-01-16T08:47:11.373Z] ║  Use AI to analyze the report and remediate issues          ║
+[2026-01-16T08:47:11.373Z] + echo ╚══════════════════════════════════════════════════════════════╝
+[2026-01-16T08:47:11.373Z] ╚══════════════════════════════════════════════════════════════╝
+[2026-01-16T08:47:11.373Z] + exit 1
+[Pipeline] archiveArtifacts
+[2026-01-16T08:47:11.402Z] Archiving artifacts
+[Pipeline] error
+[Pipeline] }
+[Pipeline] // script
+Post stage
+[Pipeline] echo
+[2026-01-16T08:47:11.496Z] Security scan completed. Check the Trivy report for details.
+[Pipeline] echo
+[2026-01-16T08:47:11.521Z] 
+[2026-01-16T08:47:11.521Z]                     ╔══════════════════════════════════════════════════════════════╗
+[2026-01-16T08:47:11.521Z]                     ║                    SECURITY SCAN FAILED                       ║
+[2026-01-16T08:47:11.521Z]                     ╠══════════════════════════════════════════════════════════════╣
+[2026-01-16T08:47:11.521Z]                     ║                                                              ║
+[2026-01-16T08:47:11.521Z]                     ║  Critical security vulnerabilities were detected!            ║
+[2026-01-16T08:47:11.521Z]                     ║                                                              ║
+[2026-01-16T08:47:11.521Z]                     ║  NEXT STEPS:                                                 ║
+[2026-01-16T08:47:11.521Z]                     ║  1. Review the Trivy report above                           ║
+[2026-01-16T08:47:11.521Z]                     ║  2. Copy the vulnerability details                          ║
+[2026-01-16T08:47:11.521Z]                     ║  3. Use AI (ChatGPT/Copilot) to analyze and fix            ║
+[2026-01-16T08:47:11.521Z]                     ║  4. Update Terraform code with AI recommendations          ║
+[2026-01-16T08:47:11.521Z]                     ║  5. Re-run this pipeline                                    ║
+[2026-01-16T08:47:11.521Z]                     ║                                                              ║
+[2026-01-16T08:47:11.521Z]                     ╚══════════════════════════════════════════════════════════════╝
+[2026-01-16T08:47:11.521Z]                     
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform Init & Validate)
+Stage "Terraform Init & Validate" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform Plan)
+Stage "Terraform Plan" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+Stage "Build Docker Image" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Container Security Scan)
+Stage "Container Security Scan" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+[2026-01-16T08:47:12.101Z] Cleaning up workspace...
+[Pipeline] cleanWs
+[2026-01-16T08:47:12.115Z] [WS-CLEANUP] Deleting project workspace...
+[2026-01-16T08:47:12.115Z] [WS-CLEANUP] Deferred wipeout is disabled by the job configuration...
+[2026-01-16T08:47:12.115Z] [WS-CLEANUP] done
+[Pipeline] echo
+[2026-01-16T08:47:12.151Z] 
+[2026-01-16T08:47:12.151Z]             ╔══════════════════════════════════════════════════════════════╗
+[2026-01-16T08:47:12.151Z]             ║                    PIPELINE FAILED                            ║
+[2026-01-16T08:47:12.151Z]             ╠══════════════════════════════════════════════════════════════╣
+[2026-01-16T08:47:12.151Z]             ║                                                              ║
+[2026-01-16T08:47:12.151Z]             ║  ❌ Pipeline execution failed!                               ║
+[2026-01-16T08:47:12.151Z]             ║                                                              ║
+[2026-01-16T08:47:12.151Z]             ║  Review the logs above to identify the issue.               ║
+[2026-01-16T08:47:12.151Z]             ║  Common causes:                                              ║
+[2026-01-16T08:47:12.151Z]             ║  - Security vulnerabilities in Terraform code               ║
+[2026-01-16T08:47:12.151Z]             ║  - Invalid Terraform configuration                          ║
+[2026-01-16T08:47:12.151Z]             ║  - Docker build failures                                    ║
+[2026-01-16T08:47:12.151Z]             ║                                                              ║
+[2026-01-16T08:47:12.151Z]             ╚══════════════════════════════════════════════════════════════╝
+[2026-01-16T08:47:12.151Z]             
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: Security scan failed! Critical vulnerabilities detected in Terraform configuration.
+Finished: FAILURE

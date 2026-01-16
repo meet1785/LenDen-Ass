@@ -372,17 +372,23 @@ All HIGH and CRITICAL vulnerabilities resolved after applying AI-recommended fix
 
 ![Trivy Scan Secure](screenshot/4-trivy-security-scan-secure.png)
 
+### Jenkins Console Logs
+
+Full Jenkins pipeline execution logs are available:
+- [Vulnerable Scan Log](screenshot/jenkins-log-vulnerable-scan.txt) - Pipeline with security issues detected
+- [Secure Scan Log](screenshot/jenkins-log-secure-scan.txt) - Pipeline passing after AI remediation
+
 ---
 
 ## 🎥 Video Recording
 
-**Demo Video Link:** *[Add your 5-10 minute video link here]*
+**Demo Video Link:** [Watch the Demo on Loom](https://www.loom.com/share/8df9539964df4c40b38e3ae0cc58e2a0)
 
-The video should demonstrate:
+The video demonstrates:
 - ✅ Jenkins pipeline execution
 - ✅ Security scans (before and after)
-- ✅ Terraform deployment to AWS
-- ✅ Application running on AWS public IP
+- ✅ Trivy scanning Terraform configurations
+- ✅ AI-driven security remediation results
 
 ---
 
