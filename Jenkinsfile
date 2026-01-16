@@ -18,7 +18,7 @@ pipeline {
         TERRAFORM_VERSION = '1.6.0'
         TRIVY_VERSION = '0.48.0'
         // Set to 'terraform-vulnerable' to demo failing scan, 'terraform' for passing
-        TERRAFORM_DIR = 'terraform-vulnerable'
+        TERRAFORM_DIR = 'terraform'
     }
     
     options {
