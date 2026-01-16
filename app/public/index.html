@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LenDen DevSecOps Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 90%;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .info-card {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+        .info-card h3 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+        .info-card p {
+            color: #ddd;
+            margin: 5px 0;
+        }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ff88, #00d9ff);
+            color: #1a1a2e;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .tech-stack {
+            margin-top: 30px;
+        }
+        .tech-stack h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .endpoints {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .endpoints a {
+            color: #00d9ff;
+            text-decoration: none;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .endpoints a:hover {
+            color: #00ff88;
+        }
+        .endpoints code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        #server-info {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🚀</div>
+        <h1>LenDen DevSecOps</h1>
+        <p class="subtitle">Secure Cloud Infrastructure Demo</p>
+        
+        <div class="info-card">
+            <h3>📦 Server Information</h3>
+            <div id="server-info">
+                <p>Loading server information...</p>
+            </div>
+        </div>
+        
+        <div class="tech-stack">
+            <h3>🛠️ Technology Stack</h3>
+            <span class="badge">Node.js</span>
+            <span class="badge">Express</span>
+            <span class="badge">Docker</span>
+            <span class="badge">Terraform</span>
+            <span class="badge">Jenkins</span>
+            <span class="badge">Trivy</span>
+            <span class="badge">AWS</span>
+        </div>
+        
+        <div class="status">
+            <span class="status-dot"></span>
+            <strong>Application Status:</strong> <span id="app-status">Checking...</span>
+        </div>
+        
+        <div class="info-card">
+            <h3>🔗 API Endpoints</h3>
+            <div class="endpoints">
+                <a href="/health"><code>GET /health</code> - Health Check</a>
+                <a href="/api/info"><code>GET /api/info</code> - Application Info</a>
+                <a href="/api/deployment"><code>GET /api/deployment</code> - Deployment Info</a>
+            </div>
+        </div>
+        
+        <div class="info-card">
+            <h3>🔒 Security Features</h3>
+            <p>✅ Infrastructure scanned with Trivy</p>
+            <p>✅ Secure SSH access (restricted IPs)</p>
+            <p>✅ Encrypted storage volumes</p>
+            <p>✅ Minimal firewall rules</p>
+        </div>
+        
+        <footer>
+            <p>DevSecOps Assignment | Jenkins CI/CD | Terraform IaC | AWS Cloud</p>
+        </footer>
+    </div>
+
+    <script>
+        // Fetch and display server information
+        async function loadServerInfo() {
+            try {
+                const response = await fetch('/api/info');
+                const data = await response.json();
+                
+                document.getElementById('server-info').innerHTML = `
+                    <p><strong>Hostname:</strong> ${data.hostname}</p>
+                    <p><strong>Environment:</strong> ${data.environment}</p>
+                    <p><strong>Node Version:</strong> ${data.nodeVersion}</p>
+                    <p><strong>Platform:</strong> ${data.platform}</p>
+                    <p><strong>Memory Free:</strong> ${data.memory.free}</p>
+                `;
+            } catch (error) {
+                document.getElementById('server-info').innerHTML = 
+                    '<p>Unable to load server information</p>';
+            }
+        }
+
+        // Check application health
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                if (data.status === 'healthy') {
+                    document.getElementById('app-status').textContent = 
+                        'Running & Healthy ✅';
+                }
+            } catch (error) {
+                document.getElementById('app-status').textContent = 
+                    'Error checking health';
+            }
+        }
+
+        // Load data on page load
+        loadServerInfo();
+        checkHealth();
+        
+        // Refresh every 30 seconds
+        setInterval(loadServerInfo, 30000);
+        setInterval(checkHealth, 30000);
+    </script>
+</body>
+</html>
