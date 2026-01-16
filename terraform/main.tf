@@ -52,6 +52,8 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
@@ -79,6 +81,117 @@ resource "aws_vpc" "main" {
 
   tags = {
     Name        = "${var.app_name}-vpc"
+    Environment = var.environment
+  }
+}
+
+resource "aws_kms_key" "cloudwatch" {
+  description             = "KMS key for CloudWatch Logs encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "*"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "kms:CallerAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      },
+      {
+        Sid    = "Allow CloudWatch Logs"
+        Effect = "Allow"
+        Principal = {
+          Service = "logs.${var.aws_region}.amazonaws.com"
+        }
+        Action = [
+          "kms:Encrypt*",
+          "kms:Decrypt*",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:Describe*"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = {
+    Name        = "${var.app_name}-cloudwatch-key"
+    Environment = var.environment
+  }
+}
+
+resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+  name              = "/aws/vpc/${var.app_name}-flow-logs"
+  retention_in_days = 30
+  kms_key_id        = aws_kms_key.cloudwatch.arn
+
+  tags = {
+    Name        = "${var.app_name}-flow-logs"
+    Environment = var.environment
+  }
+}
+
+resource "aws_iam_role" "vpc_flow_logs" {
+  name = "${var.app_name}-vpc-flow-logs-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "vpc-flow-logs.amazonaws.com"
+      }
+    }]
+  })
+
+  tags = {
+    Name        = "${var.app_name}-flow-logs-role"
+    Environment = var.environment
+  }
+}
+
+resource "aws_iam_role_policy" "vpc_flow_logs" {
+  name = "${var.app_name}-vpc-flow-logs-policy"
+  role = aws_iam_role.vpc_flow_logs.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+  })
+}
+
+resource "aws_flow_log" "main" {
+  vpc_id                   = aws_vpc.main.id
+  traffic_type             = "REJECT"
+  log_destination_type     = "cloud-watch-logs"
+  log_destination          = aws_cloudwatch_log_group.vpc_flow_logs.arn
+  iam_role_arn             = aws_iam_role.vpc_flow_logs.arn
+  max_aggregation_interval = 60
+
+  tags = {
+    Name        = "${var.app_name}-flow-log"
     Environment = var.environment
   }
 }
@@ -129,6 +242,7 @@ resource "aws_security_group" "web_server" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
+    description = "SSH access from internal network"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -136,6 +250,7 @@ resource "aws_security_group" "web_server" {
   }
 
   ingress {
+    description = "HTTPS access from VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -143,6 +258,7 @@ resource "aws_security_group" "web_server" {
   }
 
   ingress {
+    description = "Application port from VPC"
     from_port   = 5000
     to_port     = 5000
     protocol    = "tcp"
@@ -150,6 +266,7 @@ resource "aws_security_group" "web_server" {
   }
 
   egress {
+    description = "HTTPS outbound to VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -157,6 +274,7 @@ resource "aws_security_group" "web_server" {
   }
 
   egress {
+    description = "HTTP outbound to VPC"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -164,6 +282,7 @@ resource "aws_security_group" "web_server" {
   }
 
   egress {
+    description = "DNS resolution within VPC"
     from_port   = 53
     to_port     = 53
     protocol    = "udp"
