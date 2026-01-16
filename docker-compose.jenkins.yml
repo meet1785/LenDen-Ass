@@ -2,48 +2,30 @@ version: '3.8'
 
 services:
   jenkins:
-    build:
-      context: ./jenkins
-      dockerfile: Dockerfile
+    build: ./jenkins
     container_name: jenkins
-    privileged: true
-    user: root
     ports:
-      - "8080:8080"   # Jenkins Web UI
-      - "50000:50000" # Jenkins agent port
+      - "8080:8080"
+      - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket for DinD
-      - ./:/workspace  # Mount project for pipeline access
     environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
-    networks:
-      - jenkins-network
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
     restart: unless-stopped
 
-  # Optional: Docker-in-Docker (if needed for isolated builds)
-  dind:
+  docker:
     image: docker:dind
     container_name: jenkins-dind
     privileged: true
     environment:
       - DOCKER_TLS_CERTDIR=/certs
     volumes:
-      - docker-certs-ca:/certs/ca
-      - docker-certs-client:/certs/client
+      - jenkins-docker-certs:/certs/client
       - jenkins_home:/var/jenkins_home
-    networks:
-      - jenkins-network
     restart: unless-stopped
 
 volumes:
   jenkins_home:
-    driver: local
-  docker-certs-ca:
-    driver: local
-  docker-certs-client:
-    driver: local
-
-networks:
-  jenkins-network:
-    driver: bridge
+  jenkins-docker-certs:

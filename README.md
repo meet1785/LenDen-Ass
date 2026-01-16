@@ -14,6 +14,7 @@ A comprehensive DevSecOps project demonstrating containerization, infrastructure
 - [Project Structure](#-project-structure)
 - [Before & After Security Report](#-before--after-security-report)
 - [AI Usage Log](#-ai-usage-log-mandatory)
+- [GenAI Usage Report](GenAI_Usage_Report.md)
 - [Screenshots](#-screenshots)
 - [Video Recording](#-video-recording)
 
@@ -234,14 +235,29 @@ Failures: 5 (HIGH: 4, CRITICAL: 1)
 
 ### ✅ AFTER: Secure Configuration
 
+**Trivy Scan Results on `terraform/`:**
+```
+Report Summary
+┌─────────┬───────────┬───────────────────┐
+│ Target  │   Type    │ Misconfigurations │
+├─────────┼───────────┼───────────────────┤
+│ .       │ terraform │         0         │
+├─────────┼───────────┼───────────────────┤
+│ main.tf │ terraform │         0         │
+└─────────┴───────────┴───────────────────┘
+Legend: '0': Clean (no security findings detected)
+```
+
 **Fixes Applied in `terraform/`:**
 
 | Vulnerability | Before (Insecure) | After (Secure) |
 |--------------|-------------------|----------------|
-| SSH Access | `0.0.0.0/0` (anyone) | `10.0.0.0/8` (private only) |
+| SSH Access | `cidr_blocks = ["0.0.0.0/0"]` | `cidr_blocks = var.allowed_ssh_cidr_blocks` (10.0.0.0/8) |
+| HTTPS/App Ingress | `cidr_blocks = ["0.0.0.0/0"]` | `cidr_blocks = ["10.0.0.0/16"]` (VPC only) |
+| Egress Rules | `cidr_blocks = ["0.0.0.0/0"]` | `cidr_blocks = ["10.0.0.0/16"]` (VPC only) |
 | EBS Encryption | `encrypted = false` | `encrypted = true` + KMS key |
 | IMDSv2 | `http_tokens = "optional"` | `http_tokens = "required"` |
-| Egress Rules | All traffic allowed | Only HTTP, HTTPS, DNS |
+| Public IP Auto-assign | `map_public_ip_on_launch = true` | `map_public_ip_on_launch = false` |
 
 ---
 
@@ -310,33 +326,51 @@ Please:
    http_tokens = "required"
    ```
 
-4. **Egress Rules**
+4. **Ingress/Egress Rules - Restrict to VPC CIDR**
    ```hcl
-   # BEFORE (vulnerable)
-   protocol    = "-1"  # All traffic
+   # BEFORE (vulnerable) - Open to entire internet
    cidr_blocks = ["0.0.0.0/0"]
    
-   # AFTER (secure) - Separate rules for specific ports
-   egress { port = 443 }  # HTTPS
-   egress { port = 80 }   # HTTP
-   egress { port = 53 }   # DNS
+   # AFTER (secure) - Restricted to VPC CIDR only
+   cidr_blocks = ["10.0.0.0/16"]
+   ```
+
+5. **Disable Auto-Assign Public IP**
+   ```hcl
+   # BEFORE (vulnerable)
+   map_public_ip_on_launch = true
+   
+   # AFTER (secure)
+   map_public_ip_on_launch = false
    ```
 
 ---
 
 ## 📸 Screenshots
 
-### 1. Jenkins Pipeline Success
-*[Add screenshot of successful Jenkins pipeline run]*
+### 1. Jenkins Pipeline - Vulnerable Terraform (FAILED ❌)
+The pipeline correctly detected security vulnerabilities and blocked deployment.
 
-### 2. Initial Failing Security Scan (Vulnerable)
-*[Add screenshot of Trivy detecting vulnerabilities in terraform-vulnerable/]*
+![Jenkins Pipeline Failed](screenshot/1-jenkins-pipeline-vulnerable-failed.png)
 
-### 3. Final Passing Security Scan (Secure)
-*[Add screenshot of Trivy with fewer issues on terraform/]*
+### 2. Trivy Security Scan - Vulnerable Terraform
+Trivy detected **4 CRITICAL** and **3 HIGH** severity issues including:
+- SSH open to 0.0.0.0/0
+- Unrestricted egress rules
+- Unencrypted EBS volumes
+- IMDSv2 not enforced
 
-### 4. Application Running on AWS Public IP
-*[Add screenshot of the application running at http://PUBLIC_IP:5000]*
+![Trivy Scan Vulnerable](screenshot/2-trivy-security-scan-vulnerable.png)
+
+### 3. Jenkins Pipeline - Secure Terraform (PASSED ✅)
+After AI-driven remediation, the pipeline passes all security checks.
+
+![Jenkins Pipeline Passed](screenshot/3-jenkins-pipeline-secure-passed.png)
+
+### 4. Trivy Security Scan - Secure Terraform
+All HIGH and CRITICAL vulnerabilities resolved after applying AI-recommended fixes.
+
+![Trivy Scan Secure](screenshot/4-trivy-security-scan-secure.png)
 
 ---
 
